@@ -58,11 +58,11 @@ cd /opt/vosk-model-ru/model
 Создаем папку new и размещаем в ней скрипты [decode_new.sh](https://github.com/va-stepanov/vosk-model-ru-adaptation/blob/main/decode_new.sh) и [path.sh](https://github.com/va-stepanov/vosk-model-ru-adaptation/blob/main/path.sh). Из контейнера:
 ```lang="bash"
 mkdir new
-```
-с локального хоста:
-```lang="bash"
-sudo docker cp ./decode_new.sh (container_id):/opt/vosk-model-ru/model/new
-sudo docker cp ./path.sh (container_id):/opt/vosk-model-ru/model/new
+cd new
+wget https://raw.githubusercontent.com/va-stepanov/vosk-model-ru-adaptation/main/path.sh
+wget https://raw.githubusercontent.com/va-stepanov/vosk-model-ru-adaptation/main/decode_new.sh
+cd ..
+sh new/decode_new.sh
 ```
 Для проверки работоспособности движка выполняем:
 ```lang="bash"
