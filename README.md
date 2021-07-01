@@ -107,6 +107,12 @@ decoder-test 1 2.88 0.33 новый 1.00
 
 #### Подготовка словаря
 
+```
+apt-get update
+apt-get install nano
+wget https://raw.githubusercontent.com/format37/vosk-model-ru-adaptation/main/corpus.txt
+```
+
 1) Подготавливаем corpus.txt, в котором вводим по предложению на строку или слово на строку.
 
 2) Исполняем команду:
