@@ -50,7 +50,9 @@ docker build --file Dockerfile.kaldi-ext-ru --tag alphacep/kaldi-ext-ru:latest .
 Заходим внутрь образа:
 ```lang="bash"
 sudo docker run -it -p 2700:2700 alphacep/kaldi-ext-ru:latest /bin/bash
+exit
 ```
+Находим новый контейнер в portainer, переименовываем и поключаемся через web интерфейс portainer'а
 Перемещаемся в директорию модели:
 ```lang="bash"
 cd /opt/vosk-model-ru/model
@@ -62,11 +64,8 @@ cd new
 wget https://raw.githubusercontent.com/va-stepanov/vosk-model-ru-adaptation/main/path.sh
 wget https://raw.githubusercontent.com/va-stepanov/vosk-model-ru-adaptation/main/decode_new.sh
 cd ..
+# Для проверки работоспособности движка выполняем:
 sh new/decode_new.sh
-```
-Для проверки работоспособности движка выполняем:
-```lang="bash"
-./new/decode_new.sh
 ```
 Должны получить, что-то наподобие:
 ...
