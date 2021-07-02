@@ -345,5 +345,9 @@ python3 ./asr_server.py /opt/vosk-model-ru/model
 ```
 Для копирования графа из контейнера на хост, на хосте пишем:
 ```
+mkdir graph
+cd graph
 sudo docker cp vosk-adaptation:/opt/vosk-model-ru/model/new/graph/HCLG.fst .
+sudo docker cp vosk-adaptation:/opt/vosk-model-ru/model/new/graph/phones.txt .
+sudo docker cp vosk-adaptation:/opt/vosk-model-ru/model/new/graph/words.txt .
 ```
