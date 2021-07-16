@@ -196,6 +196,9 @@ phonetisaurus-apply --model ./ru.dic.fst --word_list words.txt -l ru.formatted.d
 ```
 Получаем файл `words.dic`. В случае ошибки `/usr/bin/env: 'python': No such file or directory` делаем симлинк: `ln -s /usr/bin/python3.7 /usr/bin/python`, проверив расположение python: `whereis python`.
 g2p модель может не дать результата по отдельным словам. В этом случае можно использовать другую (натренировать свою) или воспользоваться скриптом: [dictionary.py](https://github.com/va-stepanov/vosk-model-ru-adaptation/blob/main/dictionary.py).
+```
+python3 dictionary.py words.txt
+```
 
 5) [Качаем](http://www.speech.sri.com/projects/srilm/download.html) SRILM утилиту ([зеркало](https://github.com/BitSpeech/SRILM/releases)) и устанавливаем по [инструкции](https://hovinh.github.io/blog/2016-04-22-install-srilm-ubuntu/).
 
