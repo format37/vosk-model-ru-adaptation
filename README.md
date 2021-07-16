@@ -219,6 +219,7 @@ make NO_TCL=1 MACHINE_TYPE=i686-m64 World
 
 6) Компилируем языковую модель:
 ```lang="bash"
+cd /opt/vosk-model-ru/model/new/srilm
 ./bin/i686-m64/ngram-count -order 3 -limit-vocab -vocab ../words.txt -map-unk "" -kndiscount -interpolate -lm ../lm.arpa
 ```
 в случае ошибки маленького словаря `one of required modified KneserNey count-of-counts is zero` необходимо опустить -kndiscount.
