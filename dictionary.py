@@ -110,6 +110,7 @@ def convert(stressword):
 
     return " ".join(phones).encode("utf-8")
 
-for line in open(sys.argv[1]):
-    stressword = line.strip()
-    print(stressword.replace("+", ""), convert(stressword).decode(), sep='\t')
+with open('words.dic', 'a') as the_file:
+    for line in open(sys.argv[1]):
+        stressword = line.strip()
+        the_file.write(stressword.replace("+", "")+'\t'+convert(stressword).decode()+'\n')
