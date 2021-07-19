@@ -277,6 +277,12 @@ python ./mergedicts.py ../extra/db/ru.dic ../extra/db/ru-small.lm words.dic lm.
 
 1) Подготовляем с помощью скрипта [dict_prep.sh](https://github.com/va-stepanov/vosk-model-ru-adaptation/blob/main/dict_prep.sh) директорию `data/local/dict` с файлами на основе нового словаря:
 
+```
+cd /opt/vosk-model-ru/model/new
+wget https://raw.githubusercontent.com/va-stepanov/vosk-model-ru-adaptation/main/dict_prep.sh
+sh dict_prep.sh
+```
+
 2) Собирам словарь:
 ```lang="bash"
 mkdir dict dict_tmp
