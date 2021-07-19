@@ -47,6 +47,8 @@
 Изменим исходный образ так, чтобы остался закачиваемый движок и бинарники дополнительных инструментов, которые позволят проверить работу движка из командной строки. Пример: Dockerfile.kaldi-ext-ru.
 Выполняем билд образа:
 ```lang="bash"
+git clone https://github.com/format37/vosk-model-ru-adaptation.git
+cd vosk-model-ru-adaptation
 docker build --file Dockerfile.kaldi-ext-ru --tag alphacep/kaldi-ext-ru:latest .
 ```
 Заходим внутрь образа:
