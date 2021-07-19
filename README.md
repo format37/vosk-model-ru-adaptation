@@ -267,6 +267,7 @@ gunzip -k /opt/vosk-model-ru/model/extra/db/ru-small.lm.gz
 Мержуем с помощью скрипта [mergedicts.py](https://github.com/va-stepanov/vosk-model-ru-adaptation/blob/main/mergedicts.py) из директории /opt/vosk-model-ru/model/new:
 ```lang="bash"
 cd ..
+wget https://raw.githubusercontent.com/va-stepanov/vosk-model-ru-adaptation/main/mergedicts.py
 python ./mergedicts.py ../extra/db/ru.dic ../extra/db/ru-small.lm words.dic lm.arpa merged-words.txt merged-lm.arpa
 ```
 Скрипт делает простое "слияние" сущностей модели. При этом не меняется статистическая вероятность слов. Но, даже в этом случае, будет улучшение в распознавании новых слов/предложений.
