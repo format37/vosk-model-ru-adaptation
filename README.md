@@ -45,7 +45,7 @@
 Для распознавания речи потребуется вебсокетный сервер на Kaldi и Vosk библиотека с моделью для русского языка. 
 Подготовленная среда доступна из [Docker-образа](https://hub.docker.com/r/alphacep/kaldi-ru).
 Изменим исходный образ так, чтобы остался закачиваемый движок и бинарники дополнительных инструментов, которые позволят проверить работу движка из командной строки. Пример: Dockerfile.kaldi-ext-ru.
-Выполняем билд образа:
+Выполняем билд образа. Если образ уже был собран ранее, то docker build запускать не нужно:
 ```lang="bash"
 git clone https://github.com/format37/vosk-model-ru-adaptation.git
 cd vosk-model-ru-adaptation
@@ -111,15 +111,17 @@ decoder-test 1 2.88 0.33 новый 1.00
 
 #### Подготовка словаря
 
+1) На хосте подготавливаем corpus.txt, в котором вводим по предложению на строку или слово на строку.
+
 ```
+cd new
+mkdir graph
 apt-get update
 apt-get install nano
-wget https://raw.githubusercontent.com/format37/vosk-model-ru-adaptation/main/corpus.txt
+#wget https://raw.githubusercontent.com/format37/vosk-model-ru-adaptation/main/corpus.txt
 ```
 
-1) Подготавливаем corpus.txt, в котором вводим по предложению на строку или слово на строку.
-
-2) Исполняем команду:
+2) На хосте исполняем команду:
 ```lang="bash"
 grep -oE "[А-Яа-я\\-\\']{3,}" corpus.txt | tr '[:upper:]' '[:lower:]' | sort | uniq > words.txt
 ```
@@ -129,9 +131,14 @@ grep -oE "[А-Яа-я\\-\\']{3,}" corpus.txt | sed 's/.*/\L&/' | sort | uniq > w
 ```
 В результате получим отсортированный набор уникальных слов `words.txt`. Возможны проблемы с обработкой кириллицы, проверям локализацию командой `locale -a`. Если в контейнере локализацию починить не удается, можно скопировать готовый файл с локального хоста.
 
+2) Загружаем словарь с хоста в контейнер:
+```
+sudo docker cp words.txt vosk-adaptation_v1:/opt/vosk-model-ru/model/new/graph/
+```
+
 #### Подготовка языковой модели
 
-1) Устанавливаем программу [phonetisaurus](https://github.com/AdolfVonKleist/Phonetisaurus). При этом нужно установить и OpenFst-1.6.2, так как с предустановленной в образе OpenFst-1.8.0 на текущий момент проблемы в [совместимости компиляторов](https://www.gnu.org/software/autoconf/manual/autoconf-2.69/html_node/Present-But-Cannot-Be-Compiled.html).
+1) В контейнере устанавливаем программу [phonetisaurus](https://github.com/AdolfVonKleist/Phonetisaurus). При этом нужно установить и OpenFst-1.6.2, так как с предустановленной в образе OpenFst-1.8.0 на текущий момент проблемы в [совместимости компиляторов](https://www.gnu.org/software/autoconf/manual/autoconf-2.69/html_node/Present-But-Cannot-Be-Compiled.html).
 
 ```lang="bash"
 wget http://www.openfst.org/twiki/pub/FST/FstDownload/openfst-1.6.2.tar.gz
