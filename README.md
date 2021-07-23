@@ -8,3 +8,4 @@ https://github.com/va-stepanov/vosk-model-ru-adaptation
 
 ## Подготовка
 
+1
