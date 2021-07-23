@@ -27,9 +27,8 @@ def transcribe_vosk(file_name, model_path):
 
         conf_score = []
 
-        data = wf.readframes(8000) # data = wf.readframes(4000)
+        data = wf.readframes(4000)
         if len(data) == 0:
-            print('data is empty')
             break
         else:
             print('data', len(data))
