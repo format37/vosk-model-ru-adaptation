@@ -162,6 +162,20 @@ def replace_e(s):
     return s.replace('ё', 'е')
 
 
+def replace_minus(s):
+    return s.replace('-', ' ')
+
+
+def replace_dot(s):
+    return s.replace('.', ' ')
+
+
+def replace_double_spaces(s):
+    while '  ' in s:
+        s = s.replace('  ', ' ')
+    s = s.strip()
+    return s
+
 model_words_df = pd.read_csv(model_words_path, sep=" ")
 model_words_df.columns = ['line', 'id']
 
@@ -190,6 +204,8 @@ mixed_source.dropna(inplace=True)
 mixed_source.columns = ['word']
 mixed_source = pd.DataFrame(set(mixed_source.word))
 mixed_source.columns = ['mixed']
+
+mixed_source.mixed = mixed_source.mixed.apply(replace_minus)
 
 mixed_source['alone'] = mixed_source.mixed
 mixed_source.alone = mixed_source.alone.apply(alone_word)
@@ -221,8 +237,40 @@ print('corpus unique', len(corpus))
 # replace e
 corpus.word = corpus.word.apply(replace_e)
 
+# replace dot
+corpus.word = corpus.word.apply(replace_dot)
+
+# replace -
+corpus.word = corpus.word.apply(replace_minus)
+corpus = pd.DataFrame(sorted(list(corpus.word)))
+corpus.columns = ['word']
+
+# drop single
+corpus.word = corpus.word.apply(drop_single)
+
+# replace spaces
+corpus.word = corpus.word.apply(replace_double_spaces)
+
+# debug++
+#corpus = pd.DataFrame(np.array(corpus.word)[:20000]) # good
+#corpus = pd.DataFrame(np.array(corpus.word)[20000:30000]) # bad
+#corpus = pd.DataFrame(np.array(corpus.word)[20000:22000]) # good
+#corpus = pd.DataFrame(np.array(corpus.word)[20000:23000]) # good
+#corpus = pd.DataFrame(np.array(corpus.word)[20000:24000]) # good
+#corpus = pd.DataFrame(np.array(corpus.word)[20000:25000]) # good
+#corpus = pd.DataFrame(np.array(corpus.word)[20000:26000]) # good
+#corpus = pd.DataFrame(np.array(corpus.word)[20000:27000]) # good
+#corpus = pd.DataFrame(np.array(corpus.word)[20000:28000]) # good
+#corpus = pd.DataFrame(np.array(corpus.word)[20000:29000]) # bad
+#corpus = pd.DataFrame(np.array(corpus.word)[28000:29000]) # good
+#corpus = pd.DataFrame(np.array(corpus.word)[28000:30000]) # good
+#corpus = pd.DataFrame(np.array(corpus.word)[21000:29000]) # good
+#corpus = pd.DataFrame(np.array(corpus.word)[20000:20000]) # good
+#corpus.columns = ['word']
+# debug--
+
 # missing words
 missing = pd.DataFrame(corpus[corpus.word.isin(model_words_df.line)==False])
 print('missing', len(missing))
-missing.to_csv(batch_patch+'corpus.txt', index = False)
-print(batch_patch+'corpus.txt', 'build successfully')
+missing.to_csv('corpus.txt', header=None, index = False)
+print('corpus.txt', 'build successfully')
