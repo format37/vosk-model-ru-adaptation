@@ -158,6 +158,10 @@ def alone_word(s):
     return np.nan if ' ' in s else s
 
 
+def replace_e(s):
+    return s.replace('ё', 'е')
+
+
 model_words_df = pd.read_csv(model_words_path, sep=" ")
 model_words_df.columns = ['line', 'id']
 
@@ -214,7 +218,11 @@ corpus = pd.DataFrame(set(corpus.word))
 corpus.columns = ['word']
 print('corpus unique', len(corpus))
 
+# replace e
+corpus.word = corpus.word.apply(replace_e)
+
 # missing words
 missing = pd.DataFrame(corpus[corpus.word.isin(model_words_df.line)==False])
+print('missing', len(missing))
 missing.to_csv(batch_patch+'corpus.txt', index = False)
 print(batch_patch+'corpus.txt', 'build successfully')
