@@ -203,31 +203,45 @@ mixed_source.word.replace('', np.nan, inplace=True)
 mixed_source.dropna(inplace=True)
 mixed_source.columns = ['word']
 mixed_source = pd.DataFrame(set(mixed_source.word))
-mixed_source.columns = ['mixed']
+mixed_source.columns = ['word']
 
-mixed_source.mixed = mixed_source.mixed.apply(replace_minus)
+if len(mixed_source):
+    if False: # disabled
+        
+        mixed_source.columns = ['mixed']
+        mixed_source.mixed = mixed_source.mixed.apply(replace_minus)
 
-mixed_source['alone'] = mixed_source.mixed
-mixed_source.alone = mixed_source.alone.apply(alone_word)
-mixed_source['multiple'] = mixed_source.mixed
-mixed_source.multiple = mixed_source.multiple.apply(multiple_words)
+        mixed_source['alone'] = mixed_source.mixed
+        mixed_source.alone = mixed_source.alone.apply(alone_word)
+        mixed_source['multiple'] = mixed_source.mixed
+        mixed_source.multiple = mixed_source.multiple.apply(multiple_words)
 
-mixed_alone = pd.DataFrame(mixed_source.alone.dropna())
-mixed_alone.columns = ['word']
-mixed_multiple = pd.DataFrame(mixed_source.multiple.dropna())
-mixed_multiple.columns = ['word']
+        mixed_alone = pd.DataFrame(mixed_source.alone.dropna())
+        mixed_alone.columns = ['word']
+        mixed_multiple = pd.DataFrame(mixed_source.multiple.dropna())
+        mixed_multiple.columns = ['word']
+    else:
+        mixed_source['alone'] = mixed_source.word
+        mixed_source.alone = mixed_source.alone.apply(alone_word)        
+        mixed_alone = pd.DataFrame(mixed_source.alone.dropna())
+        mixed_alone.columns = ['word']
 
-# alone decline
-declined_list = []
-for ids, missing in mixed_alone.iterrows():
-    original = morph.parse(missing.word)[0]
-    for lex in original.lexeme:
-        declined_list.append(lex.word)
-alone_declined = pd.DataFrame(sorted(set(declined_list)))
-alone_declined.columns = ['word']
+    # alone decline
+    declined_list = []
+    for ids, alone in mixed_alone.iterrows():
+        original = morph.parse(alone.word)[0]
+        for lex in original.lexeme:
+            declined_list.append(lex.word)
+    alone_declined = pd.DataFrame(sorted(set(declined_list)))
+    alone_declined.columns = ['word']
 
-# merge to corpus
-corpus = pd.concat([regular, declined, mixed_multiple, alone_declined], axis = 0)
+    # merge to corpus
+    #corpus = pd.concat([regular, declined, mixed_multiple, alone_declined], axis = 0)
+    corpus = pd.concat([regular, declined, alone_declined], axis = 0)
+else:
+    # merge to corpus
+    corpus = pd.concat([regular, declined], axis = 0)
+
 corpus.columns = ['word']
 print('corpus merged', len(corpus))
 corpus = pd.DataFrame(set(corpus.word))

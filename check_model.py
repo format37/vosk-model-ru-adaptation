@@ -19,12 +19,12 @@ def transcribe_vosk(file_name, model_path):
     print('params', wf.getparams())
     # exit()
     # read model
-    model = Model(model_path)
+    model = Model(model_path)    
     rec = KaldiRecognizer(model, fr)
 
     # recognizing
     while True:
-
+        
         conf_score = []
 
         data = wf.readframes(4000)
@@ -32,13 +32,20 @@ def transcribe_vosk(file_name, model_path):
             break
         else:
             print('data', len(data))
-
-        if rec.AcceptWaveform(data):
-            accept = json.loads(rec.Result())
-            print('d', accept)
-            if accept['text'] !='':
-                print(accept['text'])
-                phrases_list.append(accept['text'])
+            
+        
+        if rec.AcceptWaveform(data):                
+            try:
+                #print('requiring rec result')
+                rec_result = rec.Result()
+                #print('successfully required rec result')
+                accept = json.loads(rec_result)
+                print('d', accept)
+                if accept['text'] !='':
+                    print(accept['text'])
+                    phrases_list.append(accept['text'])
+            except Exception as e:
+                print('error:', str(e))
     return phrases_list
 
 def get_files(path):
