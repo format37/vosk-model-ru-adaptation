@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+# https://raw.githubusercontent.com/alphacep/vosk-server/master/client-samples/python/asr-test.py
+
 import asyncio
 import websockets
 import sys
