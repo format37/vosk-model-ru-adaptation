@@ -71,3 +71,10 @@ python3 check_model.py test.wav /media/alex/nvme-a/model
 sudo docker run -d -p 2700:2700 alphacep/kaldi-vosk-model-ru:latest
 ```
 Если предыдущих пакетов обучения не сохранилось, но есть обученная ранее модель, можно удалить модель контейнера и скопировать в контейнер вашу модель. В таком случае прежние пакеты в corpus.txt не нужны. Нужны только новые слова.
+
+## Ошибки
+```
+ASSERTION_FAILED (VoskAPI:Row():cudamatrix/cu-matrix.h:672) Assertion failed: (static_cast<UnsignedMatrixIndexT>(i) < static_cast<UnsignedMatrixIndexT>(num_rows_))
+Aborted (core dumped)
+```
+Следует обновить rnnlm

@@ -184,28 +184,31 @@ regular = words_in_path(batch_patch+'regular/')
 
 # declined
 declined_source = words_in_path(batch_patch+'declined/')
-morph = pymorphy2.MorphAnalyzer()
-declined_list = []
-for ids, missing in declined_source.iterrows():
-    original = morph.parse(missing.word)[0]
-    for lex in original.lexeme:
-        declined_list.append(lex.word)
-declined = pd.DataFrame(sorted(set(declined_list)))
-declined.columns = ['word']
+if len(declined_source):
+    morph = pymorphy2.MorphAnalyzer()
+    declined_list = []
+    for ids, missing in declined_source.iterrows():
+        original = morph.parse(missing.word)[0]
+        for lex in original.lexeme:
+            declined_list.append(lex.word)
+    declined = pd.DataFrame(sorted(set(declined_list)))
+    declined.columns = ['word']
+else:
+    declined = pd.DataFrame()
 
 # mixed
 mixed_source = words_in_path(batch_patch+'mixed/', correct_symbols = '.')
-mixed_source.word = mixed_source.word.apply(drop_waste)
-mixed_source.word = mixed_source.word.apply(drop_single)
-mixed_source.word = mixed_source.word.apply(drop_single)
-mixed_source.word = mixed_source.word.apply(drop_single)
-mixed_source.word.replace('', np.nan, inplace=True)
-mixed_source.dropna(inplace=True)
-mixed_source.columns = ['word']
-mixed_source = pd.DataFrame(set(mixed_source.word))
-mixed_source.columns = ['word']
-
 if len(mixed_source):
+    mixed_source.word = mixed_source.word.apply(drop_waste)
+    mixed_source.word = mixed_source.word.apply(drop_single)
+    mixed_source.word = mixed_source.word.apply(drop_single)
+    mixed_source.word = mixed_source.word.apply(drop_single)
+    mixed_source.word.replace('', np.nan, inplace=True)
+    mixed_source.dropna(inplace=True)
+    mixed_source.columns = ['word']
+    mixed_source = pd.DataFrame(set(mixed_source.word))
+    mixed_source.columns = ['word']
+
     if False: # disabled
         
         mixed_source.columns = ['mixed']

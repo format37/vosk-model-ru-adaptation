@@ -4,7 +4,7 @@ import wave
 from vosk import Model, KaldiRecognizer, SetLogLevel
 import json
 
-def transcribe_vosk(file_name, model_path):
+def transcribe_vosk(file_name, model):
 
     # https://alphacephei.com/vosk/
     phrases_list = []
@@ -19,7 +19,7 @@ def transcribe_vosk(file_name, model_path):
     print('params', wf.getparams())
     # exit()
     # read model
-    model = Model(model_path)    
+        
     rec = KaldiRecognizer(model, fr)
 
     # recognizing
@@ -30,19 +30,18 @@ def transcribe_vosk(file_name, model_path):
         data = wf.readframes(4000)
         if len(data) == 0:
             break
-        else:
-            print('data', len(data))
-            
-        
+        #else:
+        #print('data', len(data))
+
         if rec.AcceptWaveform(data):                
             try:
                 #print('requiring rec result')
                 rec_result = rec.Result()
                 #print('successfully required rec result')
                 accept = json.loads(rec_result)
-                print('d', accept)
+                #print('d', accept)
                 if accept['text'] !='':
-                    print(accept['text'])
+                    #print(accept['text'])
                     phrases_list.append(accept['text'])
             except Exception as e:
                 print('error:', str(e))
@@ -53,7 +52,16 @@ def get_files(path):
         files.sort()
         return files
 
+print('model init..')
+model = Model(sys.argv[2])
 print('start')
-phrases = transcribe_vosk(sys.argv[1], sys.argv[2])
-print(phrases)
+#phrases = transcribe_vosk(sys.argv[1], sys.argv[2])
+counter = 0
+for file in get_files(sys.argv[1]):
+    print(' = = [',counter,'] = =',file)
+    phrases = transcribe_vosk(sys.argv[1]+'/'+file, model)
+    counter += 1
+    if counter > int(sys.argv[3]):
+        break
+    print(phrases)
 print('end')
