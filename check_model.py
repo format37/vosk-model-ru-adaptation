@@ -3,6 +3,16 @@ import sys
 import wave
 from vosk import Model, KaldiRecognizer, SetLogLevel
 import json
+import datetime
+
+if len(sys.argv) != 4:
+    print('Wrong parameters count. Please pass:')    
+    print('1. path to files')
+    print('2. model path')
+    print('3. Count of files to test')
+    exit()
+
+time_start = datetime.datetime.now()
 
 def transcribe_vosk(file_name, model):
 
@@ -64,4 +74,6 @@ for file in get_files(sys.argv[1]):
     if counter > int(sys.argv[3]):
         break
     print(phrases)
-print('end')
+
+time_end = datetime.datetime.now()
+print('spent', (time_end - time_start).seconds, 'seconds')
