@@ -59,17 +59,28 @@ make_action(){
     ./dict_prep.sh || return 1
     cd $RECIPE_DIR/s5 || return 1
     ./utils/prepare_lang.sh --phone-symbol-table $PHONES_SRC $DICT_DIR "[unk]" $DICT_TMP $DICT_OUT || return 1
-    # Собираем грамматику (G.fst)
+    # 2. Собираем грамматику (G.fst)
     gzip $LM_SRC || return 1
     ./utils/format_lm.sh $DICT_OUT $LM_SRC.gz $DICT_DIR/lexicon.txt $LANG_DIR || return 1
-    # Собираем и заменяем HCLG граф
+    # 3. Собираем и заменяем HCLG граф
     cd $WORK_DIR || return 1
     ./mkgraph.sh --self-loop-scale 1.0 $LANG_DIR $MODEL_DIR/am $GRAPH_DIR || return 1
+    # 4. Обновляем файлы rnnlm
+    mkdir /opt/vosk-model-ru/model/new/rnnlm
+    rnnlm=/opt/vosk-model-ru/model/new/rnnlm
+    cd /opt/kaldi/egs/wsj/s5
+    cat /dev/null > /opt/vosk-model-ru/model/rnnlm/unigram_probs.txt
+    /opt/vosk-model-ru/model/new/change_vocab.sh $GRAPH_DIR/words.txt /opt/vosk-model-ru/model/rnnlm $rnnlm
+    cd $rnnlm
+    cat special_symbol_opts.txt | sed 's/\s\+/\n/g' | sed '/^$/d' > special_symbol_opts.conf
+    # 5. Для использования новой модели заменим исходные файлы
     mv $GRAPH_DIR/HCLG.fst $MODEL_DIR/graph/HCLG.fst || return 1
     mv $GRAPH_DIR/words.txt $MODEL_DIR/graph/words.txt || return 1
     mv $WORDS_SRC $MODEL_DIR/extra/db/ru.dic || return 1
     mv $LANG_DIR/G.fst $MODEL_DIR/rescore/G.fst
-    mv $LANG_DIR/G.carpa $MODEL_DIR/rescore/G.carpa
+    mv $rnnlm/word_feats.txt /opt/vosk-model-ru/model/rnnlm/word_feats.txt
+    mv $rnnlm/feat_embedding.final.mat /opt/vosk-model-ru/model/rnnlm/feat_embedding.final.mat
+    mv $rnnlm/special_symbol_opts.conf /opt/vosk-model-ru/model/rnnlm/special_symbol_opts.conf
     restart_web_socket
     echo "successful update"
     return 0
