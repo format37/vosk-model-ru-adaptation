@@ -1,5 +1,5 @@
 # Ветка в разработке. Не применять.
-Данное решение будет падать с ошибкой через некоторое время после нескольких успешных транскрибаций. Причина известна. Исправление в процессе.
+Данное решение будет падать с ошибкой через некоторое время после нескольких успешных транскрибаций. Исправление в процессе.
 
 ## Цель
 
@@ -102,7 +102,8 @@ python3 word_collector.py
 
 ## Ошибки
 ```
-ASSERTION_FAILED (VoskAPI:Row():cudamatrix/cu-matrix.h:672) Assertion failed: (static_cast<UnsignedMatrixIndexT>(i) < static_cast<UnsignedMatrixIndexT>(num_rows_))
-Aborted (core dumped)
+WARNING (VoskAPI:Compose():compose-lattice-pruned.cc:889) Input lattice to composition is empty.
+server_1  | WARNING (VoskAPI:AlignLattice():word-align-lattice.cc:310) Trying to word-align empty lattice.
+server_1  | ASSERTION_FAILED (VoskAPI:CompactLatticeStateTimes():lattice-functions.cc:114) Assertion failed: (lat.Start() == 0)
 ```
-Следует обновить rnnlm
+Эта ошибка возникает не на всех машинах. Причину пока не нашел
