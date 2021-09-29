@@ -69,6 +69,7 @@ make_action(){
     mv $GRAPH_DIR/words.txt $MODEL_DIR/graph/words.txt || return 1
     mv $WORDS_SRC $MODEL_DIR/extra/db/ru.dic || return 1
     mv $LANG_DIR/G.fst $MODEL_DIR/rescore/G.fst
+    mv $LANG_DIR/G.carpa $MODEL_DIR/rescore/G.carpa
     restart_web_socket
     echo "successful update"
     return 0

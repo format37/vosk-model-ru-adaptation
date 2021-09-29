@@ -4,5 +4,4 @@ services:
   server:
     image: alphacep/kaldi-vosk-model-ru:latest
     build: server
-    ports:
-      - 192.168.1.23:2700:2700
+    network_mode: "host"
