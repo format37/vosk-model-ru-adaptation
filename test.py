@@ -12,9 +12,8 @@ async def transcribe_vosk(file_path):
         phrases = []
         with open(file_path, "rb") as audio_file:
             while True:
-                data = audio_file.read(16000) # 8000
-                #if len(data) == 0:
-                if not data:
+                data = audio_file.read(8000)
+                if len(data) == 0:
                     break
                 await websocket.send(data)
                 accept = json.loads(await websocket.recv())
