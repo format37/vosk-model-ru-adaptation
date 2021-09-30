@@ -1,5 +1,5 @@
 # Адаптация языковой модели VOSK
-[Документация](https://alphacephei.com/vosk/lm) от Alpha Cephei.
+[Документация](https://alphacephei.com/vosk/lm) от Alpha Cephei.   
 [Источник](https://github.com/va-stepanov/vosk-model-ru-adaptation), на основании которого был собран этот репозиторий.
 
 ## Цель
