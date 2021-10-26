@@ -22,7 +22,7 @@ async def call_read_words(request):
 
 	df = pd.concat([words, corpus], ignore_index=True)
 	
-	response  = df['line'].to_csv(header = False, index = False)
+	response  = df.to_csv(header = False, index = False)
 	return web.Response(text=response,content_type="text/html")
 
 
