@@ -15,10 +15,10 @@ async def call_read_words(request):
 	corpus = pd.read_csv('model_files/corpus.txt', header = None)
 	corpus.columns = ['word']
 
-	words['model'] = True
-	words['corpus'] = False
-	corpus['model'] = False
-	corpus['corpus'] = True
+	words['model'] = 1
+	words['corpus'] = 0
+	corpus['model'] = 0
+	corpus['corpus'] = 1
 
 	df = pd.concat([words, corpus], ignore_index=True)
 	
