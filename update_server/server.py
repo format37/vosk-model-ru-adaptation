@@ -8,8 +8,20 @@ async def call_test(request):
 
 
 async def call_read_words(request):
-	df = pd.read_csv('model_files/words.txt', sep=" ")
-	df.columns = ['line', 'id']
+	words = pd.read_csv('model_files/words.txt', sep=" ")
+	words.columns = ['word', 'id']
+	words.drop(['id'], axis=1, inplace=True)
+
+	corpus = pd.read_csv('model_files/corpus.txt', header = None)
+	corpus.columns = ['word']
+
+	words['model'] = True
+	words['corpus'] = False
+	corpus['model'] = False
+	corpus['corpus'] = True
+
+	df = pd.concat([words, corpus], ignore_index=True)
+	
 	response  = df['line'].to_csv(header = False, index = False)
 	return web.Response(text=response,content_type="text/html")
 
