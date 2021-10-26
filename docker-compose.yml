@@ -1,6 +1,6 @@
 version: '3.8'
 
-services:  
+services:
   server:
     image: alphacep/kaldi-vosk-model-ru:latest
     build: server
@@ -12,7 +12,7 @@ services:
     build: update_server
     network_mode: "host"
     volumes:
-      - ../:/server/model
+      - ./model_files:/server/model_files
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
     environment:

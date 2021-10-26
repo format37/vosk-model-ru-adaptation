@@ -8,9 +8,10 @@ async def call_test(request):
 
 
 async def call_read_words(request):
-	df = pd.DataFrame()
-	response  = df.to_csv(sep=';', index = False)
-	return web.Response(text=response,content_type="text/html")	
+	df = pd.read_csv('model_files/words.txt', sep=" ")
+	df.columns = ['line', 'id']
+	response  = df['line'].to_csv(header = False, index = False)
+	return web.Response(text=response,content_type="text/html")
 
 
 def main():
