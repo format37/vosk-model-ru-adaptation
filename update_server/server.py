@@ -22,6 +22,8 @@ async def call_read_words(request):
 
 	df = pd.concat([words, corpus], ignore_index=True)
 	df = df.groupby('word').max()
+
+	df.reset_index(inplace = True)
 	
 	response  = df.to_csv(header = True, index = False, sep=";")
 	return web.Response(text=response,content_type="text/html")
