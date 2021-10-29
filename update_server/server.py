@@ -7,25 +7,27 @@ async def call_test(request):
 	return web.Response(text=content,content_type="text/html")
 
 
+# init
 async def call_read_words(request):
 	words = pd.read_csv('model_files/words.txt', sep=" ")
 	words.columns = ['word', 'id']
 	words.drop(['id'], axis=1, inplace=True)
 
-	corpus = pd.read_csv('model_files/corpus.txt', header = None)
-	corpus.columns = ['word']
+	#corpus = pd.read_csv('model_files/corpus.txt', header = None)
+	#corpus.columns = ['word']
 
 	words['model'] = 1
 	words['corpus'] = 0
-	corpus['model'] = 0
-	corpus['corpus'] = 1
+	#corpus['model'] = 0
+	#corpus['corpus'] = 1
 
-	df = pd.concat([words, corpus], ignore_index=True)
-	df = df.groupby('word').max()
+	#df = pd.concat([words, corpus], ignore_index=True)
+	#df = df.groupby('word').max()
 
-	df.reset_index(inplace = True)
+	#df.reset_index(inplace = True)
 	
-	response  = df.to_csv(header = True, index = False, sep=";")
+	#response  = df.to_csv(header = True, index = False, sep=";")
+	response  = words.to_csv(header = True, index = False, sep=";")
 	return web.Response(text=response,content_type="text/html")
 
 
