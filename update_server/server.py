@@ -40,11 +40,23 @@ async def call_upload_corpus(request):
 	return web.Response(text='Upload successfull',content_type="text/html")
 
 
+async def call_merge_corpus(request):
+	path = 'model_files/'
+	files = [f for f in os.listdir(path) if f.startswith('corpus_batch_')]
+	df = pd.DataFrame()
+	for f in files:
+		df = df.append(pd.read_csv(path+f, index_col=0))
+	df = df.drop_duplicates()	
+	
+	return web.Response(text='Merge successfull',content_type="text/html")
+
+
 def main():
 	app = web.Application(client_max_size=1024**3)
 	app.router.add_route('GET', '/test', call_test)
 	app.router.add_route('GET', '/download_dictionary', call_download_dictionary)
 	app.router.add_post('/upload_corpus', call_upload_corpus)
+	app.router.add_route('GET', '/merge_corpus', call_merge_corpus)
 
 	web.run_app(
 		app,
