@@ -34,7 +34,7 @@ async def call_download_dictionary(request):
 
 async def call_upload_corpus(request):
 	csv_text = str(await request.text()).replace('\ufeff', '')
-	with open('model_files/corpus_batch_'+str(uuid.uuid4())+'.csv', 'wb') as f:
+	with open('model_files/corpus_batch_'+str(uuid.uuid4())+'.csv', 'w') as f:
 		f.write(csv_text)
 
 	return web.Response(text='Upload successfull',content_type="text/html")
