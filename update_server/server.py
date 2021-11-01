@@ -42,7 +42,7 @@ async def call_upload_corpus(request):
 
 async def call_merge_corpus(request):
 	# read corpus
-	path = './'
+	path = 'model_files/'
 	files = [f for f in os.listdir(path) if f.startswith('corpus_batch_')]
 	corpus = pd.DataFrame()
 	for f in files:
