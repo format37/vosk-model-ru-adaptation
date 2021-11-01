@@ -13,21 +13,8 @@ async def call_download_dictionary(request):
 	words = pd.read_csv('model_files/words.txt', sep=" ")
 	words.columns = ['word', 'id']
 	words.drop(['id'], axis=1, inplace=True)
-
-	#corpus = pd.read_csv('model_files/corpus.txt', header = None)
-	#corpus.columns = ['word']
-
 	words['model'] = 1
 	words['corpus'] = 0
-	#corpus['model'] = 0
-	#corpus['corpus'] = 1
-
-	#df = pd.concat([words, corpus], ignore_index=True)
-	#df = df.groupby('word').max()
-
-	#df.reset_index(inplace = True)
-	
-	#response  = df.to_csv(header = True, index = False, sep=";")
 	response  = words.to_csv(header = True, index = False, sep=";")
 	return web.Response(text=response,content_type="text/html")
 
@@ -36,7 +23,6 @@ async def call_upload_corpus(request):
 	csv_text = str(await request.text()).replace('\ufeff', '')
 	with open('model_files/corpus_batch_'+str(uuid.uuid4())+'.csv', 'w') as f:
 		f.write(csv_text)
-
 	return web.Response(text='Upload successfull',content_type="text/html")
 
 
@@ -59,7 +45,9 @@ async def call_merge_corpus(request):
 	# save merged corpus
 	if len(corpus):
 		corpus.to_csv(path+'corpus.txt', header=None, index = False)
-	
+	# unlink temporary source corpus files
+	for f in files:
+		os.unlink(path+f)
 	return web.Response(text='Merge successfull',content_type="text/html")
 
 
