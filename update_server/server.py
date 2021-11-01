@@ -41,12 +41,23 @@ async def call_upload_corpus(request):
 
 
 async def call_merge_corpus(request):
+	# read corpus
 	path = 'model_files/'
 	files = [f for f in os.listdir(path) if f.startswith('corpus_batch_')]
-	df = pd.DataFrame()
+	corpus = pd.DataFrame()
 	for f in files:
-		df = df.append(pd.read_csv(path+f, index_col=0))
-	df = df.drop_duplicates()	
+		corpus = corpus.append(pd.read_csv(path+f, index_col=0))
+	# drop duplicates
+	corpus = corpus.drop_duplicates()
+	# read words	
+	words = pd.read_csv(path+'words.txt', sep=" ")
+	words.columns = ['word', 'id']
+	words.drop(['id'], axis=1, inplace=True)
+	# drop contained in dictionary words
+	corpus = corpus[~corpus.word.isin(words.word)]
+	# save merged corpus
+	if len(corpus):
+		corpus.to_csv(path+'corpus.txt', header=None, index = False)
 	
 	return web.Response(text='Merge successfull',content_type="text/html")
 
