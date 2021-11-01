@@ -19,6 +19,13 @@ async def call_download_dictionary(request):
 	return web.Response(text=response,content_type="text/html")
 
 
+async def call_download_merged(request):
+	words = pd.read_csv('model_files/corpus.txt', header=None)
+	words.columns = ['word']
+	response  = words.to_csv(header = True, index = False, sep=";")
+	return web.Response(text=response,content_type="text/html")
+
+
 async def call_upload_corpus(request):
 	csv_text = str(await request.text()).replace('\ufeff', '')
 	with open('model_files/corpus_batch_'+str(uuid.uuid4())+'.csv', 'w') as f:
@@ -57,6 +64,7 @@ def main():
 	app.router.add_route('GET', '/download_dictionary', call_download_dictionary)
 	app.router.add_post('/upload_corpus', call_upload_corpus)
 	app.router.add_route('GET', '/merge_corpus', call_merge_corpus)
+	app.router.add_route('GET', '/download_merged', call_download_merged)
 
 	web.run_app(
 		app,
