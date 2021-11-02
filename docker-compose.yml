@@ -8,6 +8,12 @@ services:
     deploy:
       mode: replicated
       replicas: 1
+    volumes:
+      - ./model_files/corpus:/opt/vosk-model-ru/model/new/data/corpus
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    environment:
+      - TZ=Europe/Moscow
   updater:
     build: update_server
     network_mode: "host"
