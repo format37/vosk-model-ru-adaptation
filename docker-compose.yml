@@ -3,11 +3,9 @@ version: '3.8'
 services:
   server:
     image: alphacep/kaldi-vosk-model-ru:latest
-    build: server
+    build: server_x
+    restart: always
     network_mode: "host"
-    deploy:
-      mode: replicated
-      replicas: 1
     volumes:
       - ./model_files/corpus:/opt/vosk-model-ru/model/new/data/corpus
       - /etc/localtime:/etc/localtime:ro
@@ -16,6 +14,7 @@ services:
       - TZ=Europe/Moscow
   updater:
     build: update_server
+    restart: always
     network_mode: "host"
     volumes:
       - ./model_files:/server/model_files
