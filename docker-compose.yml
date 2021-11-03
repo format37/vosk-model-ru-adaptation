@@ -1,9 +1,9 @@
 version: '3.8'
 
 services:
-  server:
+  server_x:
     image: alphacep/kaldi-vosk-model-ru:latest
-    build: server_x
+    build: server
     restart: always
     network_mode: "host"
     volumes:
