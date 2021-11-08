@@ -48,13 +48,13 @@ async def call_merge_corpus(request):
 	words.drop(['id'], axis=1, inplace=True)
 	# drop contained in dictionary words
 	corpus = corpus[~corpus.word.isin(words.word)]
-	corpus.word = corpus.word.str.lower()	
+	corpus.word = corpus.word.str.lower()
 	if len(corpus):
 		# save merged corpus for download to user databases
 		corpus.to_csv(path+'corpus.txt', header=None, index = False)
 		# unlink temporary dictionary files
-		for f in files:
-			os.unlink(path+'corpus/'+f)
+		for dict_file in os.listdir(path+'corpus/'):			
+			os.unlink(path+'corpus/'+dict_file)
 		# save merged corpus for model dictionary update
 		corpus.to_csv(path+'corpus/corpus.txt', header=None, index = False)
 	# unlink temporary source corpus files
