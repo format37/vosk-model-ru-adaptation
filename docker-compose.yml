@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  server_y:
+  server_z:
     image: alphacep/kaldi-vosk-model-ru:latest
     build: server
     restart: always
