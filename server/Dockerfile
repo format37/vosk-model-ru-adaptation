@@ -28,7 +28,8 @@ RUN apt-get update && \
         ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 RUN \ 
-    git clone -b lookahead-1.8.0 --single-branch https://github.com/alphacep/kaldi /opt/kaldi \
+    #git clone -b lookahead-1.8.0 --single-branch https://github.com/alphacep/kaldi /opt/kaldi \
+    git clone -b vosk --single-branch https://github.com/alphacep/kaldi /opt/kaldi \
     && cd /opt/kaldi/tools \
     && sed -i 's:status=0:exit 0:g' extras/check_dependencies.sh \
   #      && sed -i 's:--enable-ngram-fsts:--enable-ngram-fsts --disable-bin:g' Makefile \
