@@ -62,7 +62,7 @@ RUN \
     && cd /opt/vosk-server/grpc \
     && python3 -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. stt_service.proto \
     \
-    #&& rm -rf /opt/vosk-api \
+    && rm -rf /opt/vosk-api \
   #      && rm -rf /opt/kaldi \
     && rm -rf /root/.cache \
     && rm -rf /var/lib/apt/lists/* 
@@ -73,9 +73,7 @@ RUN \
     && wget -q http://alphacephei.com/kaldi/models/vosk-model-ru-${RUVERSION}.zip \
     && unzip vosk-model-ru-${RUVERSION}.zip \
     && mv vosk-model-ru-${RUVERSION} model \
-#    && rm -rf model/extra \
     && rm -rf model/extra/openstt-ref \
-#    && rm -rf model/rescore/G.carpa \
     && rm -rf vosk-model-ru-${RUVERSION}.zip
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
