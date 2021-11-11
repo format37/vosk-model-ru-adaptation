@@ -115,7 +115,7 @@ RUN \
     && cp /opt/kaldi/egs/mini_librispeech/s5/utils/mkgraph.sh /opt/vosk-model-ru/model/new \
     && chmod +x /opt/vosk-model-ru/model/new/*.sh
     #&& gunzip -k /opt/vosk-model-ru/model/extra/db/ru-small.lm.gz 
-RUN gunzip -k /opt/vosk-model-ru/model/extra/db/ru.lm.gz 
+#RUN gunzip -k /opt/vosk-model-ru/model/extra/db/ru.lm.gz 
 EXPOSE 2700
 WORKDIR /opt/vosk-server/websocket
 CMD ["/opt/vosk-model-ru/model/new/update_corpus.sh"]
