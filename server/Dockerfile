@@ -67,12 +67,20 @@ RUN \
     && rm -rf /root/.cache \
     && rm -rf /var/lib/apt/lists/* 
 ENV RUVERSION=0.10
-RUN \ 
+#RUN \ 
+#    mkdir /opt/vosk-model-ru \
+#    && cd /opt/vosk-model-ru \
+#    && wget -q http://alphacephei.com/kaldi/models/vosk-model-ru-${RUVERSION}.zip \
+#    && unzip vosk-model-ru-${RUVERSION}.zip \
+#    && mv vosk-model-ru-${RUVERSION} model \
+#    && rm -rf model/extra/openstt-ref \
+#    && rm -rf vosk-model-ru-${RUVERSION}.zip
+RUN \
     mkdir /opt/vosk-model-ru \
-    && cd /opt/vosk-model-ru \
-    && wget -q http://alphacephei.com/kaldi/models/vosk-model-ru-${RUVERSION}.zip \
-    && unzip vosk-model-ru-${RUVERSION}.zip \
-    && mv vosk-model-ru-${RUVERSION} model \
+    && cd /opt/vosk-model-ru
+RUN wget -q http://alphacephei.com/kaldi/models/vosk-model-ru-${RUVERSION}.zip
+RUN unzip vosk-model-ru-${RUVERSION}.zip
+RUN mv vosk-model-ru-${RUVERSION} model \
     && rm -rf model/extra/openstt-ref \
     && rm -rf vosk-model-ru-${RUVERSION}.zip
 ENV LANG C.UTF-8
