@@ -78,11 +78,11 @@ ENV RUVERSION=0.10
 RUN \
     mkdir /opt/vosk-model-ru \
     && cd /opt/vosk-model-ru
-RUN wget -q http://alphacephei.com/kaldi/models/vosk-model-ru-${RUVERSION}.zip
-RUN unzip vosk-model-ru-${RUVERSION}.zip
-RUN mv vosk-model-ru-${RUVERSION} model \
+RUN wget -q http://alphacephei.com/kaldi/models/vosk-model-ru-0.10.zip
+RUN unzip vosk-model-ru-0.10.zip
+RUN mv vosk-model-ru-0.10 model \
     && rm -rf model/extra/openstt-ref \
-    && rm -rf vosk-model-ru-${RUVERSION}.zip
+    && rm -rf vosk-model-ru-0.10.zip
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
 ENV KALDI_ROOT=/opt/kaldi
