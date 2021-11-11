@@ -78,7 +78,7 @@ ENV RUVERSION=0.10
 RUN \
     mkdir /opt/vosk-model-ru \
     && cd /opt/vosk-model-ru
-RUN wget http://alphacephei.com/kaldi/models/vosk-model-ru-0.10.zip
+RUN wget http://www.alphacephei.com/kaldi/models/vosk-model-ru-0.10.zip
 RUN unzip vosk-model-ru-0.10.zip
 RUN mv vosk-model-ru-0.10 model \
     && rm -rf model/extra/openstt-ref \
