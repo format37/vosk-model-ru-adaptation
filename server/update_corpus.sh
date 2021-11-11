@@ -57,8 +57,8 @@ make_action(){
     lmplz -o 3 --discount_fallback < $CORPUS_DIR/words.txt > $CORPUS_DIR/lm.arpa || return 1
     sed -i "s/<unk>/[unk]/g" $CORPUS_DIR/lm.arpa || return 1
     cd $WORK_DIR || return 1
-    #python3 ./mergedicts.py ../extra/db/ru.dic ../extra/db/ru-small.lm $CORPUS_DIR/words.dic $CORPUS_DIR/lm.arpa $WORDS_SRC $LM_SRC || return 1
-    python3 ./mergedicts.py ../extra/db/ru.dic ../extra/db/ru.lm $CORPUS_DIR/words.dic $CORPUS_DIR/lm.arpa $WORDS_SRC $LM_SRC || return 1
+    python3 ./mergedicts.py ../extra/db/ru.dic ../extra/db/ru-small.lm $CORPUS_DIR/words.dic $CORPUS_DIR/lm.arpa $WORDS_SRC $LM_SRC || return 1
+    #python3 ./mergedicts.py ../extra/db/ru.dic ../extra/db/ru.lm $CORPUS_DIR/words.dic $CORPUS_DIR/lm.arpa $WORDS_SRC $LM_SRC || return 1
     ./dict_prep.sh || return 1
     cd $RECIPE_DIR/s5 || return 1
     ./utils/prepare_lang.sh --phone-symbol-table $PHONES_SRC $DICT_DIR "[unk]" $DICT_TMP $DICT_OUT || return 1
