@@ -67,22 +67,23 @@ RUN \
     && rm -rf /root/.cache \
     && rm -rf /var/lib/apt/lists/* 
 ENV RUVERSION=0.10
-#RUN \ 
-#    mkdir /opt/vosk-model-ru \
-#    && cd /opt/vosk-model-ru \
-#    && wget -q http://alphacephei.com/kaldi/models/vosk-model-ru-${RUVERSION}.zip \
-#    && unzip vosk-model-ru-${RUVERSION}.zip \
-#    && mv vosk-model-ru-${RUVERSION} model \
-#    && rm -rf model/extra/openstt-ref \
-#    && rm -rf vosk-model-ru-${RUVERSION}.zip
-RUN \
+RUN \ 
     mkdir /opt/vosk-model-ru \
-    && cd /opt/vosk-model-ru
-RUN wget --no-check-certificate http://alphacephei.com/kaldi/models/vosk-model-ru-0.10.zip
-RUN unzip vosk-model-ru-0.10.zip
-RUN mv vosk-model-ru-0.10 model \
+     && cd /opt/vosk-model-ru \
+#    && wget -q http://alphacephei.com/kaldi/models/vosk-model-ru-${RUVERSION}.zip \
+    && wget --no-check-certificate http://alphacephei.com/kaldi/models/vosk-model-ru-${RUVERSION}.zip \
+    && unzip vosk-model-ru-${RUVERSION}.zip \
+    && mv vosk-model-ru-${RUVERSION} model \
     && rm -rf model/extra/openstt-ref \
-    && rm -rf vosk-model-ru-0.10.zip
+    && rm -rf vosk-model-ru-${RUVERSION}.zip
+#RUN \
+#    mkdir /opt/vosk-model-ru \
+#    && cd /opt/vosk-model-ru
+#RUN wget --no-check-certificate http://alphacephei.com/kaldi/models/vosk-model-ru-0.10.zip
+#RUN unzip vosk-model-ru-0.10.zip
+#RUN mv vosk-model-ru-0.10 model \
+#    && rm -rf model/extra/openstt-ref \
+#    && rm -rf vosk-model-ru-0.10.zip
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
 ENV KALDI_ROOT=/opt/kaldi
@@ -113,9 +114,9 @@ RUN \
     && cmake .. \
     && make -j 4 \
     && cp /opt/kaldi/egs/mini_librispeech/s5/utils/mkgraph.sh /opt/vosk-model-ru/model/new \
-    && chmod +x /opt/vosk-model-ru/model/new/*.sh
+    && chmod +x /opt/vosk-model-ru/model/new/*.sh \
     #&& gunzip -k /opt/vosk-model-ru/model/extra/db/ru-small.lm.gz 
-#RUN gunzip -k /opt/vosk-model-ru/model/extra/db/ru.lm.gz 
+    && RUN gunzip -k /opt/vosk-model-ru/model/extra/db/ru.lm.gz 
 EXPOSE 2700
 WORKDIR /opt/vosk-server/websocket
 CMD ["/opt/vosk-model-ru/model/new/update_corpus.sh"]
