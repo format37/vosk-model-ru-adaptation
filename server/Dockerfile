@@ -66,24 +66,16 @@ RUN \
   #      && rm -rf /opt/kaldi \
     && rm -rf /root/.cache \
     && rm -rf /var/lib/apt/lists/* 
-ENV RUVERSION=0.10
+ENV RUVERSION=0.22
+#&& wget --no-check-certificate http://alphacephei.com/kaldi/models/vosk-model-ru-${RUVERSION}.zip \
 RUN \ 
     mkdir /opt/vosk-model-ru \
-     && cd /opt/vosk-model-ru \
-#    && wget -q http://alphacephei.com/kaldi/models/vosk-model-ru-${RUVERSION}.zip \
-    && wget --no-check-certificate http://alphacephei.com/kaldi/models/vosk-model-ru-${RUVERSION}.zip \
+    && cd /opt/vosk-model-ru \    
+    && wget --no-check-certificate https://langtea.club/vosk-models/vosk-model-ru-${RUVERSION}.zip \
     && unzip vosk-model-ru-${RUVERSION}.zip \
     && mv vosk-model-ru-${RUVERSION} model \
     && rm -rf model/extra/openstt-ref \
     && rm -rf vosk-model-ru-${RUVERSION}.zip
-#RUN \
-#    mkdir /opt/vosk-model-ru \
-#    && cd /opt/vosk-model-ru
-#RUN wget --no-check-certificate http://alphacephei.com/kaldi/models/vosk-model-ru-0.10.zip
-#RUN unzip vosk-model-ru-0.10.zip
-#RUN mv vosk-model-ru-0.10 model \
-#    && rm -rf model/extra/openstt-ref \
-#    && rm -rf vosk-model-ru-0.10.zip
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
 ENV KALDI_ROOT=/opt/kaldi
