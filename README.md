@@ -1,3 +1,13 @@
+# Не применять
+Ветку вернул в разработку, т.к. то что работало со старой моделью, не работает с новой. Если вам потребуется добавлять слова, могу предложить использовать старую модель. Для этого, в файле Dockerfile следует заменить строку:   
+```
+&& wget --no-check-certificate https://langtea.club/vosk-models/vosk-model-ru-${RUVERSION}.zip \
+```
+на строку:
+```
+&& wget --no-check-certificate http://alphacephei.com/kaldi/models/vosk-model-ru-${RUVERSION}.zip \
+```
+
 # Адаптация языковой модели VOSK
 [Документация](https://alphacephei.com/vosk/lm) от Alpha Cephei.   
 [Источник](https://github.com/va-stepanov/vosk-model-ru-adaptation), на основании которого был собран этот репозиторий.
