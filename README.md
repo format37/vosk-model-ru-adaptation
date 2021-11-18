@@ -1,16 +1,8 @@
-# Не применять
-Ветку вернул в разработку, т.к. то что работало со старой моделью, не работает с новой. Если вам потребуется добавлять слова, могу предложить использовать старую модель. Для этого, в файле Dockerfile следует заменить строку:   
-```
-&& wget --no-check-certificate https://langtea.club/vosk-models/vosk-model-ru-${RUVERSION}.zip \
-```
-на строку:
-```
-&& wget --no-check-certificate http://alphacephei.com/kaldi/models/vosk-model-ru-${RUVERSION}.zip \
-```
-
 # Адаптация языковой модели VOSK
 [Документация](https://alphacephei.com/vosk/lm) от Alpha Cephei.   
-[Источник](https://github.com/va-stepanov/vosk-model-ru-adaptation), на основании которого был собран этот репозиторий.
+[Источник](https://github.com/va-stepanov/vosk-model-ru-adaptation), на основании которого был собран этот репозиторий.   
+Данный подход работает только со старой моделью 0.10.   
+Новая модель 0.22 (на 2021.11.17) так не умеет.
 
 ## Цель
 Дополнить словарь модели своим списком слов, для улучшения качества распознавания речи.
@@ -108,10 +100,19 @@ sh download_model.sh
 python3 word_collector.py
 ```
 
-## Ошибки
+## Добавление слов в модель v.0.22
+1. Выгрузить список новых слов из 0.22 в файл corpus.txt
+2. Отправить их на добавление в модель v.0.10
+3. После обучения забрать из model_files/corpus файлы:
 ```
-WARNING (VoskAPI:Compose():compose-lattice-pruned.cc:889) Input lattice to composition is empty.
-server_1  | WARNING (VoskAPI:AlignLattice():word-align-lattice.cc:310) Trying to word-align empty lattice.
-server_1  | ASSERTION_FAILED (VoskAPI:CompactLatticeStateTimes():lattice-functions.cc:114) Assertion failed: (lat.Start() == 0)
+merged-lm.arpa.gz
+words.dic
 ```
-С этой ошибкой вряд ли кто то столкнется. Она возникла у меня при внесении изменений в докер образ. Похоже, изменения применяются в новом контейнере, только если изменить имя в docker-compose.yml. То есть ошибка возникала в старом образе. Если у вас старый образ и возникает такая ошибка, измените имя в docker-compose.yml.
+4. merged-lm.arpa.gz переименовать в new.ru-small.lm.gz
+5. Объединить words.dic и ru.dic из /extra/db/ старой модели что бы получился новый new.ru.dic
+4. Добавить новые ru-small.lm.gz и ru.dic в архив модели v0.22 в папку /extra/db/
+5. Вместо ссылки на старую модель, указать ссылку на новую модифицированную модель в файле Dockerfile
+6. Собрать образ, проверить добавление. Если все прошло хорошо, при распознавании, фраза не должна терять слова и не должно быть ошибки:
+```
+Input lattice to composition is empty.
+```

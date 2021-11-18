@@ -66,8 +66,11 @@ RUN \
   #      && rm -rf /opt/kaldi \
     && rm -rf /root/.cache \
     && rm -rf /var/lib/apt/lists/* 
+#ENV RUVERSION=0.10
+RUN echo download model
 ENV RUVERSION=0.22
 #&& wget --no-check-certificate http://alphacephei.com/kaldi/models/vosk-model-ru-${RUVERSION}.zip \
+#&& wget --no-check-certificate https://langtea.club/vosk-models/vosk-model-ru-${RUVERSION}.zip \
 RUN \ 
     mkdir /opt/vosk-model-ru \
     && cd /opt/vosk-model-ru \    
@@ -108,7 +111,6 @@ RUN \
     && cp /opt/kaldi/egs/mini_librispeech/s5/utils/mkgraph.sh /opt/vosk-model-ru/model/new \
     && chmod +x /opt/vosk-model-ru/model/new/*.sh \
     && gunzip -k /opt/vosk-model-ru/model/extra/db/ru-small.lm.gz 
-    #&& gunzip -k /opt/vosk-model-ru/model/extra/db/ru.lm.gz 
 EXPOSE 2700
 WORKDIR /opt/vosk-server/websocket
 CMD ["/opt/vosk-model-ru/model/new/update_corpus.sh"]
