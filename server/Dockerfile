@@ -66,15 +66,15 @@ RUN \
   #      && rm -rf /opt/kaldi \
     && rm -rf /root/.cache \
     && rm -rf /var/lib/apt/lists/* 
-#ENV RUVERSION=0.10
-RUN echo download model
-ENV RUVERSION=0.22
+ENV RUVERSION=0.10
+RUN echo build v.2
+#ENV RUVERSION=0.22
 #&& wget --no-check-certificate http://alphacephei.com/kaldi/models/vosk-model-ru-${RUVERSION}.zip \
 #&& wget --no-check-certificate https://langtea.club/vosk-models/vosk-model-ru-${RUVERSION}.zip \
 RUN \ 
     mkdir /opt/vosk-model-ru \
     && cd /opt/vosk-model-ru \    
-    && wget --no-check-certificate https://langtea.club/vosk-models/vosk-model-ru-${RUVERSION}.zip \
+    && wget --no-check-certificate http://alphacephei.com/kaldi/models/vosk-model-ru-${RUVERSION}.zip \
     && unzip vosk-model-ru-${RUVERSION}.zip \
     && mv vosk-model-ru-${RUVERSION} model \
     && rm -rf model/extra/openstt-ref \
