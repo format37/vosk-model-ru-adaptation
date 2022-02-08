@@ -3,6 +3,10 @@ version: '3.8'
 services:
   server_z:
     image: alphacep/kaldi-vosk-model-ru:latest
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
     build: server
     restart: always
     network_mode: "host"
@@ -14,6 +18,10 @@ services:
       - TZ=Europe/Moscow
   updater:
     build: update_server
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
     restart: always
     network_mode: "host"
     volumes:
